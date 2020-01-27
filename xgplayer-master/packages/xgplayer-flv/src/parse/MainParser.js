@@ -43,7 +43,7 @@ export default class MainParser extends TransCoder {
     }
     this.initEventBind()
   }
-
+  // 开始加载数据
   startLoadData () {
     if (!this._config.isLive) {
       this.initMeta()
@@ -51,7 +51,7 @@ export default class MainParser extends TransCoder {
       this.initLiveStream()
     }
   }
-
+  // 直播
   initLiveStream () {
     this.loadTask = new LiveTask(this._config.url, this.requestConfig).run(this.loadLiveData.bind(this))
   }
@@ -70,7 +70,7 @@ export default class MainParser extends TransCoder {
       console.log(e.message)
     }
   }
-
+  // 非直播
   initMeta () {
     const self = this
     const Resolver = {

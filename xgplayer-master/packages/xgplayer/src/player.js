@@ -90,6 +90,7 @@ class Player extends Proxy {
     } else {
       this.pluginsCall()
     }
+    // 给player对象绑定事件
     this.ev.forEach((item) => {
       let evName = Object.keys(item)[0]
       let evFunc = this[item[evName]]
@@ -97,7 +98,7 @@ class Player extends Proxy {
         this.on(evName, evFunc)
       }
     });
-
+    // video之外的player的事件
     ['focus', 'blur'].forEach(item => {
       this.on(item, this['on' + item.charAt(0).toUpperCase() + item.slice(1)])
     })
@@ -108,6 +109,8 @@ class Player extends Proxy {
         player.video.focus()
       }
     }
+    // 绑定focus
+
     this.root.addEventListener('mousemove', this.mousemoveFunc)
     this.playFunc = function () {
       player.emit('focus')
@@ -116,7 +119,7 @@ class Player extends Proxy {
       }
     }
     player.once('play', this.playFunc)
-
+    // 下一个事件循环 ready
     setTimeout(() => {
       this.emit('ready')
     }, 0)
@@ -126,6 +129,7 @@ class Player extends Proxy {
         player[item].addEventListener('keydown', function(e) {player.onKeydown(e, player)})
       })
     }
+    // start
     if (this.config.videoInit) {
       if(util.hasClass(this.root, 'xgplayer-nostart')) {
         this.start()
@@ -286,7 +290,7 @@ class Player extends Proxy {
       this.play()
     }
   }
-
+  // 执行插件函数
   pluginsCall () {
     let self = this
     if (Player.plugins) {

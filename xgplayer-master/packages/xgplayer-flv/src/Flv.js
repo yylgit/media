@@ -10,6 +10,7 @@ export default class Flv {
   constructor (options, player) {
     this._player = player
     this._options = Object.assign({}, getDefaultConf(), options)
+    // 真正的flv播放器
     this.flvPlayer = new MainParser(this._options, player)
     this.mse = new MSE(player.video)
     this.isSeeking = false

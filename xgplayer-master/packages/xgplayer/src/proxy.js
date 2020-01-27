@@ -2,7 +2,7 @@ import EventEmitter from 'event-emitter'
 import util from './utils/util'
 import Errors from './error'
 // import allOff from 'event-emitter/all-off'
-
+// video元素 属性和事件的包装
 class Proxy {
   constructor (options) {
     this.logParams = {
@@ -61,6 +61,7 @@ class Proxy {
         style.sheet.addRule(`${wrap} video::cue`, styleStr)
       }
     }
+    // 
     this.video = util.createDom(this.videoConfig.mediaType, textTrackDom, this.videoConfig, '')
     if (options.autoplay) {
       this.video.autoplay = true
@@ -68,6 +69,7 @@ class Proxy {
         this.video.muted = true
       }
     }
+    // video的绑定的事件
     this.ev = ['play', 'playing', 'pause', 'ended', 'error', 'seeking', 'seeked',
       'timeupdate', 'waiting', 'canplay', 'canplaythrough', 'durationchange', 'volumechange', 'loadeddata'
     ].map((item) => {
@@ -80,7 +82,7 @@ class Proxy {
     this._interval = {}
     let lastBuffer = '0,0'
     let self = this
-
+    // 给video绑定事件
     this.ev.forEach(item => {
       self.evItem = Object.keys(item)[0]
       let name = Object.keys(item)[0]
@@ -128,6 +130,7 @@ class Proxy {
               }))
           }
         } else {
+          // 触发player的事件
           self.emit(name, self)
         }
 

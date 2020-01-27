@@ -18,6 +18,7 @@ class FlvPlayer extends Player {
         this.__flv__.destroy()
         this.__flv__ = new Flv(this._options, this)
         this.__flv__.load()
+        // flv 也是video组件播放 地址是mse.url
         this.video.src = this.__flv__.mse.url
         this.currentTime = 0
         setTimeout(() => {
@@ -39,6 +40,7 @@ class FlvPlayer extends Player {
     const { isLive } = options
     player.__flv__ = new Flv(options, player)
     player.once('complete', () => {
+      // start方法的下一个事件循环触发complete
       player.createInstance(player.__flv__)
     })
     player.on('pause', () => {
