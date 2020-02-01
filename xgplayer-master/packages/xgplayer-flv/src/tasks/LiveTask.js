@@ -1,4 +1,4 @@
-// 直播任务
+// 直播任务获取 直播数据
 class LiveTask {
   constructor (url, config) {
     //https://developer.mozilla.org/zh-CN/docs/Web/API/Headers

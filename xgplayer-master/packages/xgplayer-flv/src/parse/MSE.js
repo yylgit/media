@@ -2,6 +2,7 @@ import EventEmitter from 'event-emitter'
 let count = 0
 class MSE {
   constructor (mediaElement) {
+    //codecs 解码器
     this.codecs = 'video/mp4; codecs="avc1.64001E, mp4a.40.5"'
     let self = this
     EventEmitter(this)

@@ -1,3 +1,5 @@
+//破译者 
+//parseData 最后是创建tag this._store.state.tags中
 import Demuxer from './demux/Demuxer'
 import Buffer from '../write/Buffer'
 import Tag from '../models/Tag'
@@ -29,6 +31,7 @@ export default class FlvParser extends Demuxer {
   }
 
   setFlv (flvU8a) {
+    // 每一次setFlv都回重置index和offset 然后返回offset 外面根据offset进行裁剪数据
     this.stop = false
     this.index = 0
     this.offset = 0
@@ -37,8 +40,11 @@ export default class FlvParser extends Demuxer {
 
     if (!this.firstFlag) {
       return this.parseData()
+      // 超过13个字节才开始处理
     } else if (tempU8a.length > 13 && FlvParser.isFlvHead(tempU8a)) {
+      // 解析是否有音视频 
       this.parseHead()
+      // 改变this.index
       this.readData(9) // 跳过头部
       this.readData(4) // 跳过下一个记录头部size的 int32
       this.parseData()
@@ -52,7 +58,10 @@ export default class FlvParser extends Demuxer {
 
   parseData () {
     const {length: u8aLength} = this.temp_u8a
+    // 这里有个疑问 如果header和body不是一次来的 tag会不会计算错误，没有严格的tag的开始和结束标志 
+    // 第一次buffer tag的body没有完全到结束了 但是offset把11个header字节删除了，下次来就没有header字节了。
     while (this.index < u8aLength && !this.stop) {
+      //offset是最后返回的处理到的位置
       this.offset = this.index
       const tag = new Tag()
       if (this.unreadLength >= 11) {
@@ -63,12 +72,14 @@ export default class FlvParser extends Demuxer {
         tag.Timestamp = this.readData(4)
         tag.StramId = this.readData(3)
       } else {
+        // 如果数据小于11个字节 则直接return offset就是当前的index
         this.stop = true
         continue
       }
       if (this.unreadLength >= this.getBodySize(tag.bodySize) + 4) {
         tag.body = this.readData(this.getBodySize(tag.bodySize))
         tag.tagSize = this.readData(4)
+        // 最后是存放到了store中的tags
         const {tags, _hasVideo, _hasAudio} = this._store.state
         switch (tag.tagType) {
           case 9:
@@ -100,17 +111,21 @@ export default class FlvParser extends Demuxer {
   getBodySize (sizeArr) {
     return Buffer.readAsInt(sizeArr)
   }
-
+  // 
   parseHead () {
     const {temp_u8a: tempU8a, _store} = this
     const result = {
       match: false
     }
+    // 第四个字节是1
     if (tempU8a[3] !== 1) {
       return result
     }
+    // 第五个字节
     const flag = tempU8a[4]
+    // 100  第三位是1代表有音频
     const hasAudio = ((flag & 4) >>> 2) !== 0
+    // 01 第一位是1 代表有视频
     const hasVideo = (flag & 1) !== 0
 
     if (!hasAudio && !hasVideo) {

@@ -2,6 +2,7 @@
 import Demuxer from './Demuxer'
 import DataView4Read from '../../utils/DataView4Read'
 // import { mp3Versions, mp3BitRate, audioSampleRate } from '../../constants/types';
+// resolve 方法 解析tag  AAC解码， 更新store中的audioTrack audioMetaData
 import {
   soundRateTypes,
   samplingFrequencyTypes,
@@ -25,6 +26,7 @@ export default class AudioDemuxer extends Demuxer {
   resolve (tag) {
     this.readOffset = 0
     const { _store: store } = this
+    // 修改store中的audioTrack audioMetaData
     const { audioTrack: track } = store
     this.currentTag = tag
     this.data = tag.body

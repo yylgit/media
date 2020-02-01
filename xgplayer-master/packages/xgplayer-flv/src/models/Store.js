@@ -2,8 +2,6 @@ import MediaInfo from './MediaInfo'
 import sniffer from '../utils/sniffer'
 class Store {
   constructor () {
-
-
     this.state = {
       isLe: sniffer.isLe,
       _hasAudio: false,

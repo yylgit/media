@@ -19,7 +19,9 @@ export default class MainParser extends TransCoder {
     this._store = new Store()
     this._store.isLive = config.isLive || false
     this._store.player = player
+    // 解析成tag 存入store
     this.flvParser = new FlvParser(this._store)
+    // 标记解析器
     this.tagDemuxer = new TagDemuxer(this._store)
     this.mp4remuxer = new Mp4Remuxer(this._store)
     this.buffer = new Buffer()
@@ -53,17 +55,23 @@ export default class MainParser extends TransCoder {
   }
   // 直播
   initLiveStream () {
+    // 加载数据
     this.loadTask = new LiveTask(this._config.url, this.requestConfig).run(this.loadLiveData.bind(this))
   }
 
   loadLiveData (buffer) {
+    // 直播结束
     if (buffer === undefined) {
       this.emit('live-end')
       this._player.mse.endOfStream()
       this.destroy()
     }
     try {
+      //https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
+      // Uint8Array 8位无符号整型数组  每一个元素正好是一个字节
+      // this.buffer就是一个数据缓冲池 往里加数据 根据处理的offset进行删除
       this.buffer.write(new Uint8Array(buffer))
+      // 解析tag
       let offset = this.setFlv(this.buffer.buffer)
       this.buffer.buffer = this.buffer.buffer.slice(offset)
     } catch (e) {
@@ -200,6 +208,7 @@ export default class MainParser extends TransCoder {
   }
 
   setFlvFirst (arrayBuff, baseTime) {
+    // 调用flvParser
     const offset = this.flvParser.setFlv(new Uint8Array(arrayBuff))
     const {tags} = this._store.state
 
@@ -211,7 +220,7 @@ export default class MainParser extends TransCoder {
       if (this._tempBaseTime !== 0 && this._tempBaseTime === tags[0].getTime()) {
         this._store.state._timestampBase = 0
       }
-
+      // 解析标记
       this.tagDemuxer.resolveTags(tags)
     }
 
@@ -224,6 +233,7 @@ export default class MainParser extends TransCoder {
     const offset = this.flvParser.setFlv(new Uint8Array(arrayBuff))
     const {tags} = this._store.state
     if (tags.length) {
+      // 解析标记
       this.tagDemuxer.resolveTags(tags)
     }
     return offset

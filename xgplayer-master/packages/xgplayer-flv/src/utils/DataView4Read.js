@@ -15,6 +15,7 @@ export default class DataView4Read {
                 if (offset === self._context.readOffset) {
                     self._context.readOffset += size / 8;
                 }
+                // 这里读取字节序 为什么是反的  如果isLe是低位字节 就是false 按照的是高位字节
                 return self._dv[`getUint${size}`](offset, !_store.isLe);
             };
 

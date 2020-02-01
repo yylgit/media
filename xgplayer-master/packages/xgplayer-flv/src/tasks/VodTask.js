@@ -6,6 +6,7 @@ const LoadCls = (function (window) {
   }
   return XHRLoader
 })(window)
+// 保证只有2个任务处于请求状态， 新建任务往队列里添加，任务完成从队列删除 每次变化都会更新队列进行请求。
 class VodTask {
   constructor (url, range, headers) {
     this.url = url

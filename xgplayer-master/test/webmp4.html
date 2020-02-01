@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  .video-demo {
+    width: 400px;
+    height: 400px;
+  }
+  </style>
+</head>
+
+<body>
+  <!-- <video class="video-demo"  src="./assets/xgplayer-demo-360p.flv">
+    您的浏览器不支持 video 标签。
+  </video> -->
+  我测试的原生的video播放mp4 也是有分块获取视频的功能 在header中有Range字段 西瓜视频官网的demo就没有
+  <video class="video-demo" autoplay=true playsinline controls="controls">
+    <source src="./assets/xgplayer-demo-720p.mp4" type="video/mp4">
+    your browser does not support the video tag
+  </video>
+</body>
+</html>

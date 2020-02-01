@@ -1,3 +1,4 @@
+// 字节序是否是 小字节序 是反的
 const le = (function () {
     const buf = new ArrayBuffer(2);
     (new DataView(buf)).setInt16(0, 256, true) // little-endian write
