@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "npm run build",
     "dev": "webpack --progress --display-chunks --watch --config ./webpack.config.dev.js",
+    "yyl": "webpack --progress --display-chunks --watch --config ./webpack.config.yyl.js",
     "build": "webpack --progress --display-chunks -p",
     "watch": "webpack --progress --display-chunks -p --watch"
   },

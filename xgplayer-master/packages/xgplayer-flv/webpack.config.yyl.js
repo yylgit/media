@@ -42,8 +42,8 @@ const umd = {
 const client = {
   entry: polyfill.concat(['./src/index.js']),
   output: {
-    path: `${__dirname}/browser`,
-    filename: 'index.dev.js',
+    path: path.join(__dirname, '../../test/assets'),
+    filename: 'xgflv.dev.js',
     library: 'FlvPlayer',
     libraryTarget: 'window'
   },
