@@ -221,7 +221,7 @@ export default class Mp4Remuxer extends Remuxer {
 
     track.samples = []
     track.length = 0
-
+    debugger
     this.handleMediaFragment({
       type: 'video',
       data: moofMdat.buffer.buffer,

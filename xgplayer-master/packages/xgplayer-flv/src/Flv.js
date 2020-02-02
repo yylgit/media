@@ -8,6 +8,7 @@ import getDefaultConf from './constants/config'
 /* eslint-disable no-unused-vars */
 export default class Flv {
   constructor (options, player) {
+    debugger
     this._player = player
     this._options = Object.assign({}, getDefaultConf(), options)
     // 真正的flv播放器
@@ -71,6 +72,7 @@ export default class Flv {
       }
       this.isEnded(player, this.flvPlayer)
     }
+    // 点播正常播放更新进度
     player.on('timeupdate', () => {
       this.handleTimeUpdate()
     })
@@ -195,6 +197,7 @@ export default class Flv {
 
   progressChecker (player) {
     const { minCachedTime, preloadTime } = this._options
+    // range是当前缓存的范围
     const range = player.getBufferedRange()
     if (this.flvPlayer.videoDuration - range[1] * this.flvPlayer.videoTimeScale < 0.1 * this.flvPlayer.videoTimeScale) { return }
     if (range[1] - player.currentTime < minCachedTime && !this.isDataLoading) {

@@ -24,6 +24,7 @@ export default class AudioDemuxer extends Demuxer {
     this.handleMediaInfoReady = () => {}
   }
   resolve (tag) {
+    debugger
     this.readOffset = 0
     const { _store: store } = this
     // 修改store中的audioTrack audioMetaData

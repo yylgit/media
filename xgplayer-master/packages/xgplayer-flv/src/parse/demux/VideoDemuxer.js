@@ -20,6 +20,7 @@ export default class VideoDemuxer extends Demuxer {
   }
 
   resolve (tag) {
+    debugger
     this.data = tag.body
     this.currentTag = tag
     const firstUI8 = this.readData(1)[0]

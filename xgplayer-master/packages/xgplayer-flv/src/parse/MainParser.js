@@ -80,9 +80,11 @@ export default class MainParser extends TransCoder {
   }
   // 非直播
   initMeta () {
+    debugger
     const self = this
     const Resolver = {
       resolveChunk ({timeStamp, buffer}) {
+        debugger
         if (timeStamp !== self.loadTask.timeStamp) return
         self.err_cnt = 0
         self.buffer.write(new Uint8Array(buffer))
@@ -93,6 +95,7 @@ export default class MainParser extends TransCoder {
         }
       }
     }
+    //初始值 start: 0  end: 999999
     this.range = {
       start: this.range.end + 1,
       end: this.range.end + this.META_CHUNK_SIZE
@@ -113,6 +116,7 @@ export default class MainParser extends TransCoder {
   }
 
   loadSegments (changeRange, currentTime = 0, preloadTime) {
+    debugger
     this._isNewSegmentsArrival = false
     const resolveChunk = ({timeStamp, buffer}) => {
       if (this.isTempPlayer) {
